@@ -1,11 +1,10 @@
-/* XC 3A Beautification System v1.0
- * Character-themed colors, animations, GALGAME bubbles, global CSS injection
- * CDN-hosted at dist/xc-aaa.js
+/* XC 3A Beautification System v2.0
+ * Visible character-themed styling for SillyTavern messages
  */
 (function() {
   'use strict';
-  if (window.__XC_AAA_V1) return;
-  window.__XC_AAA_V1 = true;
+  if (window.__XC_AAA_V2) return;
+  window.__XC_AAA_V2 = true;
 
   // ========== CHARACTER THEME DATA ==========
 window.__XC_CHAR_THEMES = {
@@ -122,432 +121,171 @@ window.__XC_CHAR_THEMES = {
   '林野': {hue:60,sat:27,light:51,anim:'minimal-blink',bubble:'clean-minimal',group:'neutral_observant'},
 };
 
-  // ========== ANIMATION KEYFRAMES (9 types) ==========
-  var animStyle = document.createElement('style');
-  animStyle.id = 'xc-aaa-animations';
-  animStyle.textContent = `
-    /* float - warm/lively characters */
-    @keyframes xc-float {
-      0%,100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-6px) scale(1.01); }
-    }
-    /* breathe - cool/guarded characters */
-    @keyframes xc-breathe {
-      0%,100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.015); opacity: 0.96; }
-    }
-    /* pulse-dark - dark/complex characters */
-    @keyframes xc-pulse-dark {
-      0%,100% { filter: brightness(1) saturate(1); transform: scale(1); }
-      50% { filter: brightness(0.85) saturate(1.3); transform: scale(1.008); }
-    }
-    /* gentle-sway - gentle/soft characters */
-    @keyframes xc-gentle-sway {
-      0%,100% { transform: translateX(0) rotate(0deg); }
-      25% { transform: translateX(2px) rotate(0.3deg); }
-      75% { transform: translateX(-2px) rotate(-0.3deg); }
-    }
-    /* sharp-twitch - sharp/bold characters */
-    @keyframes xc-sharp-twitch {
-      0%,100% { transform: translate(0,0) rotate(0); }
-      10% { transform: translate(-1px,1px) rotate(-0.5deg); }
-      20% { transform: translate(1px,-1px) rotate(0.5deg); }
-      30% { transform: translate(0,0) rotate(0); }
-    }
-    /* slow-grow - earth/nature characters */
-    @keyframes xc-slow-grow {
-      0%,100% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(1.012); filter: brightness(1.08); }
-    }
-    /* fade-flicker - wistful/melancholy characters */
-    @keyframes xc-fade-flicker {
-      0%,100% { opacity: 1; filter: brightness(1); }
-      30% { opacity: 0.92; filter: brightness(0.95); }
-      60% { opacity: 1; filter: brightness(1.05); }
-      80% { opacity: 0.96; }
-    }
-    /* luxe-shimmer - complex/feminine characters */
-    @keyframes xc-luxe-shimmer {
-      0%,100% { filter: hue-rotate(0deg) brightness(1); }
-      33% { filter: hue-rotate(-3deg) brightness(1.08); }
-      66% { filter: hue-rotate(3deg) brightness(1.05); }
-    }
-    /* minimal-blink - neutral/observant characters */
-    @keyframes xc-minimal-blink {
-      0%,92%,100% { opacity: 1; }
-      96% { opacity: 0.97; }
-    }
+  // ========== CSS INJECTION ==========
+  var style = document.createElement('style');
+  style.id = 'xc-aaa-v2';
+  style.textContent = `
+    @keyframes xc-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    @keyframes xc-breathe { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.02);opacity:.95} }
+    @keyframes xc-pulse-dark { 0%,100%{filter:brightness(1) saturate(1)} 50%{filter:brightness(.8) saturate(1.4)} }
+    @keyframes xc-gentle-sway { 0%,100%{transform:translateX(0) rotate(0)} 25%{transform:translateX(2px) rotate(.5deg)} 75%{transform:translateX(-2px) rotate(-.5deg)} }
+    @keyframes xc-sharp-twitch { 0%,90%,100%{transform:translate(0,0)} 93%{transform:translate(-1px,1px)} 96%{transform:translate(1px,-1px)} }
+    @keyframes xc-slow-grow { 0%,100%{transform:scale(1);filter:brightness(1)} 50%{transform:scale(1.015);filter:brightness(1.1)} }
+    @keyframes xc-fade-flicker { 0%,100%{opacity:1} 40%{opacity:.85} 60%{opacity:1} 80%{opacity:.93} }
+    @keyframes xc-luxe-shimmer { 0%,100%{filter:hue-rotate(0) brightness(1)} 50%{filter:hue-rotate(5deg) brightness(1.12)} }
+    @keyframes xc-minimal-blink { 0%,90%,100%{opacity:1} 95%{opacity:.95} }
 
-    /* Animation duration mapping */
-    .xc-anim-float { animation: xc-float 4s ease-in-out infinite; }
-    .xc-anim-breathe { animation: xc-breathe 5s ease-in-out infinite; }
-    .xc-anim-pulse-dark { animation: xc-pulse-dark 3.5s ease-in-out infinite; }
-    .xc-anim-gentle-sway { animation: xc-gentle-sway 6s ease-in-out infinite; }
-    .xc-anim-sharp-twitch { animation: xc-sharp-twitch 8s ease-in-out infinite; }
-    .xc-anim-slow-grow { animation: xc-slow-grow 7s ease-in-out infinite; }
-    .xc-anim-fade-flicker { animation: xc-fade-flicker 5s ease-in-out infinite; }
-    .xc-anim-luxe-shimmer { animation: xc-luxe-shimmer 4s ease-in-out infinite; }
-    .xc-anim-minimal-blink { animation: xc-minimal-blink 6s ease-in-out infinite; }
+    .xc-anim-float{animation:xc-float 4s ease-in-out infinite}
+    .xc-anim-breathe{animation:xc-breathe 5s ease-in-out infinite}
+    .xc-anim-pulse-dark{animation:xc-pulse-dark 3.5s ease-in-out infinite}
+    .xc-anim-gentle-sway{animation:xc-gentle-sway 6s ease-in-out infinite}
+    .xc-anim-sharp-twitch{animation:xc-sharp-twitch 8s ease-in-out infinite}
+    .xc-anim-slow-grow{animation:xc-slow-grow 7s ease-in-out infinite}
+    .xc-anim-fade-flicker{animation:xc-fade-flicker 5s ease-in-out infinite}
+    .xc-anim-luxe-shimmer{animation:xc-luxe-shimmer 4s ease-in-out infinite}
+    .xc-anim-minimal-blink{animation:xc-minimal-blink 6s ease-in-out infinite}
 
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      [class*="xc-anim-"] { animation: none !important; }
+    .mes.xc-themed {
+      border-left: 3px solid hsl(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%)) !important;
+      background: linear-gradient(90deg,
+        hsla(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%), 0.08),
+        transparent 40%) !important;
+      transition: border-color 0.5s ease, background 0.5s ease !important;
     }
-  `;
-  document.head.appendChild(animStyle);
-
-  // ========== BUBBLE STYLE SYSTEM (9 types) ==========
-  var bubbleStyle = document.createElement('style');
-  bubbleStyle.id = 'xc-aaa-bubbles';
-  bubbleStyle.textContent = `
-    /* Base bubble */
-    .xc-bubble {
-      position: relative;
-      padding: 12px 18px;
-      border-radius: 16px;
-      margin: 8px 0;
-      max-width: 80%;
-      font-size: 15px;
-      line-height: 1.6;
-      transition: all 0.3s ease;
+    .mes.xc-themed .ch_name {
+      color: hsl(var(--xc-hue,40), calc(var(--xc-sat,50%) * 0.6 + 20%), calc(var(--xc-light,55%) * 0.5 + 35%)) !important;
+      text-shadow: 0 0 10px hsla(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%), 0.4) !important;
     }
-    .xc-bubble::before {
-      content: '';
-      position: absolute;
-      width: 0; height: 0;
+    .mes.xc-themed img.avatar,
+    .mes.xc-themed .mes_avatar img,
+    .mes.xc-themed .avatar img {
+      border: 2px solid hsla(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%), 0.5) !important;
+      box-shadow: 0 0 15px hsla(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%), 0.3) !important;
     }
-
-    /* rounded-warm - warm/lively */
-    .xc-bubble-rounded-warm {
-      border-radius: 20px 20px 20px 4px;
-      border: 1.5px solid hsla(var(--xc-hue,38), var(--xc-sat,74%), var(--xc-light,62%), 0.35);
-      background: hsla(var(--xc-hue,38), var(--xc-sat,74%), var(--xc-light,62%), 0.08);
-      box-shadow: 0 2px 12px hsla(var(--xc-hue,38), 70%, 55%, 0.15);
-    }
-    .xc-bubble-rounded-warm::before {
-      left: -8px; bottom: 12px;
-      border: 8px solid transparent;
-      border-right-color: hsla(var(--xc-hue,38), var(--xc-sat,74%), var(--xc-light,62%), 0.25);
-    }
-
-    /* angular-cool - cool/guarded */
-    .xc-bubble-angular-cool {
-      border-radius: 4px 16px 16px 4px;
-      border-left: 3px solid hsl(var(--xc-hue,228), var(--xc-sat,44%), var(--xc-light,52%));
-      background: hsla(var(--xc-hue,228), var(--xc-sat,44%), var(--xc-light,52%), 0.06);
-      backdrop-filter: blur(8px);
-    }
-    .xc-bubble-angular-cool::before {
-      left: -6px; top: 10px;
-      border: 6px solid transparent;
-      border-right-color: hsl(var(--xc-hue,228), var(--xc-sat,44%), var(--xc-light,52%));
-    }
-
-    /* dark-glow - dark/complex */
-    .xc-bubble-dark-glow {
-      border-radius: 14px;
-      background: hsla(var(--xc-hue,306), 40%, 15%, 0.85);
-      border: 1px solid hsla(var(--xc-hue,306), 60%, 50%, 0.4);
-      box-shadow: 0 0 20px hsla(var(--xc-hue,306), 60%, 50%, 0.2), inset 0 0 10px hsla(var(--xc-hue,306), 50%, 30%, 0.3);
-      color: hsl(var(--xc-hue,306), 30%, 85%);
-    }
-    .xc-bubble-dark-glow::before {
-      left: -7px; bottom: 14px;
-      border: 7px solid transparent;
-      border-right-color: hsla(var(--xc-hue,306), 40%, 15%, 0.85);
-    }
-
-    /* soft-rounded - gentle/soft */
-    .xc-bubble-soft-rounded {
-      border-radius: 24px;
-      border: 1px solid hsla(var(--xc-hue,194), var(--xc-sat,32%), var(--xc-light,74%), 0.25);
-      background: hsla(var(--xc-hue,194), var(--xc-sat,32%), var(--xc-light,74%), 0.1);
-      box-shadow: 0 4px 16px hsla(var(--xc-hue,194), 30%, 70%, 0.1);
-    }
-    .xc-bubble-soft-rounded::before {
-      left: -7px; bottom: 16px;
-      border: 7px solid transparent;
-      border-right-color: hsla(var(--xc-hue,194), var(--xc-sat,32%), var(--xc-light,74%), 0.15);
-    }
-
-    /* sharp-pointed - sharp/bold */
-    .xc-bubble-sharp-pointed {
-      border-radius: 2px 2px 12px 2px;
-      border: 2px solid hsl(var(--xc-hue,353), var(--xc-sat,79%), var(--xc-light,53%));
-      background: hsla(var(--xc-hue,353), var(--xc-sat,79%), var(--xc-light,53%), 0.08);
-      clip-path: polygon(0 0, 100% 0, 100% 85%, 92% 100%, 0 100%);
-      box-shadow: 2px 2px 8px hsla(var(--xc-hue,353), 70%, 50%, 0.2);
-    }
-    .xc-bubble-sharp-pointed::before {
-      left: -1px; bottom: -1px;
-      border: 0;
-      width: 10px; height: 10px;
-      background: hsl(var(--xc-hue,353), var(--xc-sat,79%), var(--xc-light,53%));
-      clip-path: polygon(0 100%, 100% 0, 100% 100%);
-    }
-
-    /* organic - earth/nature */
-    .xc-bubble-organic {
-      border-radius: 50% 50% 50% 50% / 30% 30% 50% 50%;
-      border: 1.5px solid hsla(var(--xc-hue,103), var(--xc-sat,51%), var(--xc-light,45%), 0.3);
-      background: linear-gradient(135deg, hsla(var(--xc-hue,103), 40%, 40%, 0.06), hsla(var(--xc-hue,103), 45%, 50%, 0.1));
-    }
-    .xc-bubble-organic::before {
-      left: -6px; bottom: 18px;
-      border: 6px solid transparent;
-      border-right-color: hsla(var(--xc-hue,103), var(--xc-sat,51%), var(--xc-light,45%), 0.2);
-    }
-
-    /* misty - wistful/melancholy */
-    .xc-bubble-misty {
-      border-radius: 16px 16px 16px 2px;
-      border: 1px solid hsla(var(--xc-hue,250), 48%, 60%, 0.2);
-      background: hsla(var(--xc-hue,250), 40%, 55%, 0.06);
-      backdrop-filter: blur(12px) saturate(0.9);
-      box-shadow: 0 0 30px hsla(var(--xc-hue,250), 40%, 60%, 0.08);
-    }
-    .xc-bubble-misty::before {
-      left: -6px; bottom: 10px;
-      border: 6px solid transparent;
-      border-right-color: hsla(var(--xc-hue,250), 48%, 60%, 0.12);
-    }
-
-    /* elegant-rose - complex/feminine */
-    .xc-bubble-elegant-rose {
-      border-radius: 18px 18px 18px 6px;
-      border: 1.5px solid hsla(var(--xc-hue,346), 66%, 59%, 0.3);
-      background: linear-gradient(135deg, hsla(var(--xc-hue,346), 60%, 65%, 0.08), hsla(var(--xc-hue,346), 50%, 55%, 0.04));
-      box-shadow: 0 2px 16px hsla(var(--xc-hue,346), 55%, 60%, 0.12);
-    }
-    .xc-bubble-elegant-rose::before {
-      left: -7px; bottom: 14px;
-      border: 7px solid transparent;
-      border-right-color: hsla(var(--xc-hue,346), 60%, 65%, 0.15);
-    }
-
-    /* clean-minimal - neutral/observant */
-    .xc-bubble-clean-minimal {
-      border-radius: 4px 4px 4px 14px;
-      border-left: 2px solid hsla(var(--xc-hue,40), 20%, 59%, 0.4);
-      background: hsla(var(--xc-hue,40), 15%, 59%, 0.04);
-    }
-    .xc-bubble-clean-minimal::before {
-      display: none;
-    }
-  `;
-  document.head.appendChild(bubbleStyle);
-
-  // ========== GLOBAL THEME INJECTION ==========
-  var globalStyle = document.createElement('style');
-  globalStyle.id = 'xc-aaa-global';
-  globalStyle.textContent = `
-    /* Ambient background based on active character theme */
-    .xc-themed-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background: radial-gradient(ellipse at 50% 30%,
-        hsla(var(--xc-active-hue, 40), var(--xc-active-sat, 30%), var(--xc-active-light, 59%), 0.03),
-        transparent 70%);
-      transition: background 1.5s ease;
-    }
-    .xc-themed-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 80% 80%,
-        hsla(var(--xc-active-hue, 40), 20%, 50%, 0.02),
-        transparent 60%);
-    }
-
-    /* Message container enhancement */
-    .xc-msg-themed {
-      border-left: 2px solid hsla(var(--xc-hue, 40), var(--xc-sat, 30%), var(--xc-light, 59%), 0.3);
-      padding-left: 10px;
-      transition: border-color 0.5s ease;
-    }
-
-    /* Character name badge */
-    .xc-name-badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 10px;
-      font-size: 0.85em;
-      font-weight: 600;
-      background: hsla(var(--xc-hue, 40), var(--xc-sat, 50%), var(--xc-light, 55%), 0.15);
-      color: hsl(var(--xc-hue, 40), var(--xc-sat, 60%), calc(var(--xc-light, 55%) - 15%));
-      border: 1px solid hsla(var(--xc-hue, 40), var(--xc-sat, 50%), var(--xc-light, 55%), 0.25);
-    }
-
-    /* Typewriter cursor for bubble text */
-    .xc-typing-cursor::after {
-      content: '█';
-      animation: xc-cursor-blink 0.8s step-end infinite;
-      color: hsl(var(--xc-hue, 40), var(--xc-sat, 50%), var(--xc-light, 55%));
-    }
-    @keyframes xc-cursor-blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-
-    /* Character portrait frame */
-    .xc-portrait-frame {
-      position: relative;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid hsla(var(--xc-hue, 40), var(--xc-sat, 50%), var(--xc-light, 55%), 0.3);
-      box-shadow: 0 0 20px hsla(var(--xc-hue, 40), var(--xc-sat, 50%), var(--xc-light, 55%), 0.1);
-      transition: all 0.4s ease;
-    }
-    .xc-portrait-frame:hover {
-      border-color: hsla(var(--xc-hue, 40), var(--xc-sat, 60%), var(--xc-light, 60%), 0.5);
-      box-shadow: 0 0 30px hsla(var(--xc-hue, 40), var(--xc-sat, 60%), var(--xc-light, 60%), 0.2);
-      transform: scale(1.02);
-    }
-
-    /* Emotion tag */
-    .xc-emotion-tag {
+    .xc-char-badge {
       display: inline-block;
       padding: 1px 8px;
-      border-radius: 4px;
-      font-size: 0.75em;
-      margin-right: 4px;
-      background: hsla(var(--xc-hue, 40), var(--xc-sat, 50%), 50%, 0.12);
-      color: hsl(var(--xc-hue, 40), var(--xc-sat, 50%), 40%);
+      border-radius: 8px;
+      font-size: 0.8em;
+      background: hsla(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%), 0.2);
+      border: 1px solid hsla(var(--xc-hue,40), var(--xc-sat,50%), var(--xc-light,55%), 0.4);
+      color: hsl(var(--xc-hue,40), var(--xc-sat,50%), calc(var(--xc-light,55%) - 20%));
+      margin-left: 6px;
     }
-
-    /* Scene transition overlay */
-    .xc-scene-transition {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-      background: radial-gradient(circle at center,
-        hsla(var(--xc-active-hue, 40), 40%, 50%, 0.15),
-        hsla(var(--xc-active-hue, 40), 30%, 30%, 0.3),
-        hsla(0, 0%, 10%, 0.5));
+    #xc-ambient {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse at 50% 0%,
+        hsla(var(--xc-active-hue,40), 30%, 50%, 0.06),
+        transparent 60%);
+      transition: background 2s ease;
     }
-    .xc-scene-transition.xc-active {
-      opacity: 1;
+    #xc-aaa-status {
+      position: fixed; bottom: 4px; right: 4px; z-index: 99999;
+      font-size: 10px; padding: 2px 6px; border-radius: 4px;
+      background: rgba(0,0,0,0.7); color: #0f0;
+      font-family: monospace; pointer-events: none; opacity: 0.7;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [class*="xc-anim-"]{animation:none!important}
     }
   `;
-  document.head.appendChild(globalStyle);
+  document.head.appendChild(style);
 
-  // ========== RUNTIME: Apply character themes to messages ==========
+  var ambient = document.createElement('div');
+  ambient.id = 'xc-ambient';
+  document.body.appendChild(ambient);
+
+  var status = document.createElement('div');
+  status.id = 'xc-aaa-status';
+  status.textContent = 'XC-3A: init...';
+  document.body.appendChild(status);
+
   var ANIM_MAP = {
-    'float': 'xc-anim-float',
-    'breathe': 'xc-anim-breathe',
-    'pulse-dark': 'xc-anim-pulse-dark',
-    'gentle-sway': 'xc-anim-gentle-sway',
-    'sharp-twitch': 'xc-anim-sharp-twitch',
-    'slow-grow': 'xc-anim-slow-grow',
-    'fade-flicker': 'xc-anim-fade-flicker',
-    'luxe-shimmer': 'xc-anim-luxe-shimmer',
-    'minimal-blink': 'xc-anim-minimal-blink',
+    'float':'xc-anim-float','breathe':'xc-anim-breathe','pulse-dark':'xc-anim-pulse-dark',
+    'gentle-sway':'xc-anim-gentle-sway','sharp-twitch':'xc-anim-sharp-twitch','slow-grow':'xc-anim-slow-grow',
+    'fade-flicker':'xc-anim-fade-flicker','luxe-shimmer':'xc-anim-luxe-shimmer','minimal-blink':'xc-anim-minimal-blink'
   };
 
   function getTheme(name) {
-    if (!name) return null;
-    // Try exact match
-    if (window.__XC_CHAR_THEMES && window.__XC_CHAR_THEMES[name]) {
-      return window.__XC_CHAR_THEMES[name];
-    }
-    // Try fuzzy match (contains)
-    if (window.__XC_CHAR_THEMES) {
-      var keys = Object.keys(window.__XC_CHAR_THEMES);
-      for (var i = 0; i < keys.length; i++) {
-        if (name.indexOf(keys[i]) >= 0 || keys[i].indexOf(name) >= 0) {
-          return window.__XC_CHAR_THEMES[keys[i]];
-        }
-      }
+    if (!name || !window.__XC_CHAR_THEMES) return null;
+    if (window.__XC_CHAR_THEMES[name]) return window.__XC_CHAR_THEMES[name];
+    var keys = Object.keys(window.__XC_CHAR_THEMES);
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i].length >= 2 && (name.indexOf(keys[i]) >= 0 || keys[i].indexOf(name) >= 0))
+        return window.__XC_CHAR_THEMES[keys[i]];
     }
     return null;
   }
 
-  function applyThemeToElement(el, name) {
-    var theme = getTheme(name);
-    if (!theme) return;
-    el.style.setProperty('--xc-hue', theme.hue);
-    el.style.setProperty('--xc-sat', theme.sat + '%');
-    el.style.setProperty('--xc-light', theme.light + '%');
-    var animClass = ANIM_MAP[theme.anim];
-    if (animClass && el.classList) {
-      el.classList.add(animClass);
-    }
-  }
+  var themedCount = 0;
+  var activeHue = 40;
 
-  function setGlobalActiveTheme(name) {
-    var theme = getTheme(name);
-    if (!theme) return;
-    document.documentElement.style.setProperty('--xc-active-hue', theme.hue);
-    document.documentElement.style.setProperty('--xc-active-sat', theme.sat + '%');
-    document.documentElement.style.setProperty('--xc-active-light', theme.light + '%');
-  }
-
-  // ========== OBSERVE DOM FOR CHARACTER MESSAGES ==========
-  function scanForCharacters() {
-    // Look for character names in message blocks
-    var msgBlocks = document.querySelectorAll('[class*="mes"], [class*="message"], [class*="chat"]');
-    msgBlocks.forEach(function(block) {
-      if (block.dataset.xcThemed) return;
-      var text = block.textContent || '';
-      if (window.__XC_CHAR_THEMES) {
-        var keys = Object.keys(window.__XC_CHAR_THEMES);
-        for (var i = 0; i < keys.length; i++) {
-          if (text.indexOf(keys[i]) >= 0 && keys[i].length >= 2) {
-            applyThemeToElement(block, keys[i]);
-            block.dataset.xcThemed = '1';
-            break;
-          }
+  function applyToMessage(mes) {
+    if (mes.dataset.xcThemed) return;
+    var nameEl = mes.querySelector('.ch_name');
+    var charName = '';
+    if (nameEl) charName = nameEl.textContent.trim();
+    if (!charName) {
+      var textEl = mes.querySelector('.mes_text');
+      if (textEl) {
+        var text = textEl.textContent.trim().slice(0, 20);
+        var keys = Object.keys(window.__XC_CHAR_THEMES || {});
+        for (var k of keys) {
+          if (k.length >= 2 && text.indexOf(k) >= 0) { charName = k; break; }
         }
       }
-    });
+    }
+    if (!charName) return;
+    var theme = getTheme(charName);
+    if (!theme) return;
+    mes.dataset.xcThemed = '1';
+    mes.classList.add('xc-themed');
+    mes.style.setProperty('--xc-hue', theme.hue);
+    mes.style.setProperty('--xc-sat', theme.sat + '%');
+    mes.style.setProperty('--xc-light', theme.light + '%');
+    var animClass = ANIM_MAP[theme.anim];
+    if (animClass) {
+      var avatar = mes.querySelector('img.avatar, .mes_avatar img, .avatar img');
+      if (avatar) avatar.classList.add(animClass);
+      if (nameEl) nameEl.classList.add(animClass);
+    }
+    if (nameEl && !nameEl.querySelector('.xc-char-badge')) {
+      var badge = document.createElement('span');
+      badge.className = 'xc-char-badge';
+      badge.textContent = '\u2728';
+      nameEl.appendChild(badge);
+    }
+    activeHue = theme.hue;
+    document.documentElement.style.setProperty('--xc-active-hue', theme.hue);
+    themedCount++;
   }
 
-  // Init ambient bg
-  var bg = document.createElement('div');
-  bg.className = 'xc-themed-bg';
-  document.body.appendChild(bg);
+  function scanAll() {
+    var messages = document.querySelectorAll('.mes');
+    var total = messages.length;
+    messages.forEach(applyToMessage);
+    status.textContent = 'XC-3A: ' + themedCount + '/' + total + ' | h=' + activeHue;
+  }
 
-  // Scan periodically
-  var scanTimer = setInterval(scanForCharacters, 2000);
-  scanForCharacters();
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mut) {
+      mut.addedNodes.forEach(function(node) {
+        if (node.classList && node.classList.contains('mes')) applyToMessage(node);
+        if (node.querySelectorAll) node.querySelectorAll('.mes').forEach(applyToMessage);
+      });
+    });
+  });
+  observer.observe(document.body, {childList: true, subtree: true});
 
-  // Expose API
+  scanAll();
+  setInterval(scanAll, 3000);
+
   window.XCAAA = {
     getTheme: getTheme,
-    applyTheme: applyThemeToElement,
-    setActive: setGlobalActiveTheme,
-    createBubble: function(name, text, emotion) {
-      var theme = getTheme(name);
-      var div = document.createElement('div');
-      div.className = 'xc-bubble';
-      if (theme) {
-        div.className += ' xc-bubble-' + theme.bubble;
-        div.style.setProperty('--xc-hue', theme.hue);
-        div.style.setProperty('--xc-sat', theme.sat + '%');
-        div.style.setProperty('--xc-light', theme.light + '%');
-        var animClass = ANIM_MAP[theme.anim];
-        if (animClass) div.classList.add(animClass);
-      } else {
-        div.className += ' xc-bubble-clean-minimal';
-      }
-      if (emotion) {
-        var tag = document.createElement('span');
-        tag.className = 'xc-emotion-tag';
-        tag.textContent = emotion;
-        div.appendChild(tag);
-      }
-      var span = document.createElement('span');
-      span.textContent = text;
-      div.appendChild(span);
-      return div;
-    },
-    rescan: scanForCharacters,
+    rescan: scanAll,
+    version: '2.0',
+    count: function() { return themedCount; }
   };
 
-  console.log('[XC-AAA] 3A Beautification v1.0 loaded -', Object.keys(window.__XC_CHAR_THEMES || {}).length, 'characters');
+  console.log('[XC-AAA] v2.0 loaded -', Object.keys(window.__XC_CHAR_THEMES || {}).length, 'characters');
 })();
